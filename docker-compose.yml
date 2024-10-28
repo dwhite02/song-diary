@@ -1,0 +1,41 @@
+# Comments are provided throughout this file to help you get started.
+# If you need more help, visit the Docker Compose reference guide at
+# https://docs.docker.com/go/compose-spec-reference/
+
+# Here the instructions define your application as a service called "server".
+# This service is built from the Dockerfile in the current directory.
+# You can add other services your application may depend on here, such as a
+# database or a cache. For examples, see the Awesome Compose repository:
+# https://github.com/docker/awesome-compose
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: final
+    ports:
+      - 8080:80
+      - 443:443
+    environment:
+      # - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Host=db;Database=songdiarydb;Username=youruser;Password=yourpassword;Include Error Detail=true
+      - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
+      - SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}
+      - Identity__PasswordOptions__RequireDigit=${IDENTITY_PASSWORD_OPTIONS__REQUIRE_DIGIT}
+      - Identity__PasswordOptions__RequiredLength=${IDENTITY_PASSWORD_OPTIONS__REQUIRED_LENGTH}
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: songdiarydb
+      POSTGRES_USER: youruser
+      POSTGRES_PASSWORD: yourpassword
+    volumes: 
+      - database:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+volumes:
+  database:

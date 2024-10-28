@@ -1,0 +1,16 @@
+# services:
+#   server:
+#     environment:
+#       - ASPNETCORE_ENVIRONMENT=Development
+#       - ASPNETCORE_URLS=https://+:443;http://+:80
+#       - Spotify__ClientId=${SPOTIFY_CLIENT_ID}
+#       - Spotify__ClientSecret=${SPOTIFY_CLIENT_SECRET}
+#       - ConnectionStrings__DefaultConnection=Host=db;Database=songdiarydb;Username=youruser;Password=yourpassword;Include Error Detail=true
+#       - Identity__PasswordOptions__RequireDigit=${IDENTITY_PASSWORD_OPTIONS__REQUIRE_DIGIT}
+#       - Identity__PasswordOptions__RequiredLength=${IDENTITY_PASSWORD_OPTIONS__REQUIRED_LENGTH}
+#     ports:
+#       - "80:80"
+#       - "443:443"
+#     volumes:
+#       - ~/.aspnet/https:/root/.aspnet/https:ro
+#       - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
