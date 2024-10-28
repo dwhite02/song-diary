@@ -10,9 +10,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add Identity services
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+    options.Password.RequireDigit = bool.Parse(builder.Configuration["Identity:PasswordOptions:RequireDigit"] ?? "false");
+    options.Password.RequiredLength = int.Parse(builder.Configuration["Identity:PasswordOptions:RequiredLength"] ?? "6"); // Default to 6
+})
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
 
 // Seed service
 builder.Services.AddScoped<SeedService>();
