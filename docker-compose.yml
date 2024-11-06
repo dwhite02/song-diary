@@ -17,12 +17,12 @@ services:
       - 8080:80
       - 443:443
     environment:
-      # - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DefaultConnection=Host=db;Database=songdiarydb;Username=youruser;Password=yourpassword;Include Error Detail=true
-      - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
-      - SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}
-      - Identity__PasswordOptions__RequireDigit=${IDENTITY_PASSWORD_OPTIONS__REQUIRE_DIGIT}
-      - Identity__PasswordOptions__RequiredLength=${IDENTITY_PASSWORD_OPTIONS__REQUIRED_LENGTH}
+      - ASPNETCORE_ENVIRONMENT=Docker
+      # - ConnectionStrings__DefaultConnection=Host=songdiary-db-1;Database=songdiarydb;Username=youruser;Password=yourpassword;Include Error Detail=true
+      # - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
+      # - SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}
+      # - Identity__PasswordOptions__RequireDigit=${IDENTITY_PASSWORD_OPTIONS__REQUIRE_DIGIT}
+      # - Identity__PasswordOptions__RequiredLength=${IDENTITY_PASSWORD_OPTIONS__REQUIRED_LENGTH}
     depends_on:
       - db
 
@@ -33,9 +33,6 @@ services:
       POSTGRES_USER: youruser
       POSTGRES_PASSWORD: yourpassword
     volumes: 
-      - database:/var/lib/postgresql/data
+      - ./postgres:/var/lib/postgresql/data
     ports:
       - 5432:5432
-
-volumes:
-  database:

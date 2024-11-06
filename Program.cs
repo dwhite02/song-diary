@@ -7,20 +7,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(opt =>
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+   opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
 // Add Identity services
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-{
-    options.Password.RequireDigit = bool.Parse(builder.Configuration["Identity:PasswordOptions:RequireDigit"] ?? "false");
-    options.Password.RequiredLength = int.Parse(builder.Configuration["Identity:PasswordOptions:RequiredLength"] ?? "6"); // Default to 6
-})
-.AddEntityFrameworkStores<ApplicationDbContext>()
-.AddDefaultTokenProviders();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+//     .AddDefaultTokenProviders();
 
 // Seed service
-builder.Services.AddScoped<SeedService>();
+//builder.Services.AddScoped<SeedService>();
 
 // Add HttpClientFactory
 builder.Services.AddHttpClient();  // This allows for easy management of HttpClient instances
@@ -38,11 +34,11 @@ if (app.Environment.IsDevelopment())
 }
 
 // Seed the database
-using (var scope = app.Services.CreateScope())
-{
-    var seedService = scope.ServiceProvider.GetRequiredService<SeedService>();
-    await seedService.SeedDataAsync();  // Ensure this is asynchronous
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var seedService = scope.ServiceProvider.GetRequiredService<SeedService>();
+//    await seedService.SeedDataAsync();  // Ensure this is asynchronous
+//}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
