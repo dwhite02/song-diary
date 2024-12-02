@@ -16,7 +16,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 //     .AddDefaultTokenProviders();
 
 // Seed service
-// builder.Services.AddScoped<SeedService>();
+builder.Services.AddScoped<SeedService>();
 
 // Add HttpClientFactory
 builder.Services.AddHttpClient();  // This allows for easy management of HttpClient instances
@@ -33,12 +33,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+using (var serviceScope = app.Services.CreateScope())
+{
+    var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    context.Database.Migrate();
+}
+
 // Seed the database
-// using (var scope = app.Services.CreateScope())
-// {
-//    var seedService = scope.ServiceProvider.GetRequiredService<SeedService>();
-//    await seedService.SeedDataAsync();  // Ensure this is asynchronous
-// }
+using (var scope = app.Services.CreateScope())
+{
+   var seedService = scope.ServiceProvider.GetRequiredService<SeedService>();
+   await seedService.SeedDataAsync();  // Ensure this is asynchronous
+}
 
 // app.UseHttpsRedirection();
 app.UseStaticFiles();
