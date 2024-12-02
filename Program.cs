@@ -15,6 +15,12 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 //     .AddDefaultTokenProviders();
 
+if (!builder.Environment.IsDevelopment())
+{
+    // In production, load environment variables (for cloud-hosted configurations)
+    builder.Configuration.AddEnvironmentVariables(); // Add environment variables for production
+}
+
 // Seed service
 builder.Services.AddScoped<SeedService>();
 
